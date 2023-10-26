@@ -230,8 +230,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ee4e9dc1e30cc64980e6be5d6f5d61e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshs:
-  - {fileID: 0}
+  meshs: []
+  bulletPos: {fileID: 1158372365}
+  bullet: {fileID: 9123603099851135009, guid: 4d73a8481926fa844bfc81f7249acf93, type: 3}
 --- !u!135 &162694746
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -734,7 +735,7 @@ Transform:
   m_GameObject: {fileID: 1158372364}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.008, y: 0.334, z: 0.418}
+  m_LocalPosition: {x: 0.008, y: 0.334, z: 0.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
