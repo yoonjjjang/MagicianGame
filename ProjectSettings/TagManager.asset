@@ -6,6 +6,7 @@ TagManager:
   tags:
   - M_joystick
   - A_joystick
+  - Magic
   layers:
   - Default
   - TransparentFX

@@ -9,26 +9,33 @@ public class PlayerController : MonoBehaviour
     private Vector2 move, mouseLook ,joystickLook;
     private Vector3 rotationTarget;
     public bool isPC;
+    bool isTargeting;
+    float x;
+    float y;
+    PlayerEvent pEven;
 
-
+    void Start()
+    {
+        pEven = GetComponent<PlayerEvent>();
+    }
     public void OnMove(InputAction.CallbackContext context)
     {
         move = context.ReadValue<Vector2>();
     }
 
-    public void OnMouseLook(InputAction.CallbackContext context)
+    public void OnMouseLook(InputAction.CallbackContext context) // Left Stick
     {
         mouseLook = context.ReadValue<Vector2>();
     }
 
-    public void OnJoystickLook(InputAction.CallbackContext context)
+    public void OnJoystickLook(InputAction.CallbackContext context) // Right Stick
     {
         joystickLook = context.ReadValue<Vector2>();
     }
 
-    void Start()
+    void Awake()
     {
-
+        isTargeting = false;
     }
 
     void Update()
@@ -57,7 +64,7 @@ public class PlayerController : MonoBehaviour
             }
             
         }
-        
+        Attack();
     }
 
     public void movePlayer()
@@ -103,5 +110,33 @@ public class PlayerController : MonoBehaviour
 
         transform.Translate(movement * speed * Time.deltaTime, Space.World);
     }
+    private void Attack()
+    {
+        if (pEven == null)
+            return;
+        
+        x = joystickLook.x;
+        y = joystickLook.y;
+        if (x!=0 || y != 0)
+        {
+            isTargeting = true;
+        }
+        else if (x == 0 && y == 0 && isTargeting == true)
+        {
+            pEven.Use();
+            isTargeting = false;
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Magic")
+        {
+            //Magic magic = other.GetComponent<Magic>();
+            //curHealth -= bullet.damage;
+            //Vector3 reactVec = transform.position - other.transform.position;
+            Destroy(other.gameObject);
 
+            //StartCoroutine(OnDamage());
+        }
+    }
 }

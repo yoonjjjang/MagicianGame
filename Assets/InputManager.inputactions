@@ -125,22 +125,5 @@
             ]
         }
     ],
-    "controlSchemes": [
-        {
-            "name": "MOBILE",
-            "bindingGroup": "MOBILE",
-            "devices": [
-                {
-                    "devicePath": "<Touchscreen>",
-                    "isOptional": false,
-                    "isOR": false
-                },
-                {
-                    "devicePath": "<AndroidJoystick>",
-                    "isOptional": false,
-                    "isOR": false
-                }
-            ]
-        }
-    ]
+    "controlSchemes": []
 }
