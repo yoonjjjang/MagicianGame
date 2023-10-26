@@ -9,10 +9,13 @@ public class PlayerController : MonoBehaviour
     private Vector2 move, mouseLook ,joystickLook;
     private Vector3 rotationTarget;
     public bool isPC;
-    bool isTargeting;
+    bool isTargeting = false;
+    bool isShot = false;
     float x;
     float y;
     PlayerEvent pEven;
+
+    Animator anim;
 
     void Start()
     {
@@ -35,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
+        anim = GetComponentInChildren<Animator>();
         isTargeting = false;
     }
 
@@ -54,9 +58,11 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
+
             if (joystickLook.x == 0 && joystickLook.y == 0)
             {
                 movePlayer();
+                
             }
             else
             {
@@ -69,6 +75,7 @@ public class PlayerController : MonoBehaviour
 
     public void movePlayer()
     {
+        
         Vector3 movement = new Vector3(move.x, 0f, move.y);
 
         if (movement != Vector3.zero)
@@ -77,6 +84,8 @@ public class PlayerController : MonoBehaviour
         }
 
         transform.Translate(movement * speed * Time.deltaTime, Space.World);
+
+        anim.SetBool("idleToRun", movement != Vector3.zero);
     }
 
 
@@ -112,21 +121,38 @@ public class PlayerController : MonoBehaviour
     }
     private void Attack()
     {
-        if (pEven == null)
-            return;
-        
-        x = joystickLook.x;
-        y = joystickLook.y;
-        if (x!=0 || y != 0)
+        if (!isShot)
         {
-            isTargeting = true;
+            if (pEven == null)
+                return;
+
+            x = joystickLook.x;
+            y = joystickLook.y;
+            if (x != 0 || y != 0)
+            {
+
+                isTargeting = true;
+
+            }
+            else if (x == 0 && y == 0 && isTargeting == true)
+            {
+                pEven.Use();
+                isShot = true;
+                Invoke("AttackOut", 0.82f);
+                isTargeting = false;
+            }
+
         }
-        else if (x == 0 && y == 0 && isTargeting == true)
-        {
-            pEven.Use();
-            isTargeting = false;
-        }
+        anim.SetBool("idleToAttack01", isShot);
     }
+
+    void AttackOut()
+    {
+        Debug.Log("shot!");
+        isShot = false;
+    }
+
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Magic")
