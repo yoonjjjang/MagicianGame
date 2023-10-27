@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public bool isPC;
     bool isTargeting = false;
     bool isShot = false;
+    bool isGroggy = false;
     float x;
     float y;
     PlayerEvent pEven;
@@ -44,33 +45,39 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (isPC)
+        anim.SetBool("idleToStun", isGroggy);
+        if (!isGroggy)
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(mouseLook);
-
-            if (Physics.Raycast (ray, out hit))
+            if (isPC)
             {
-                rotationTarget = hit.point;
-            }
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(mouseLook);
 
-            movePlayerWithAim();
-        }
-        else
-        {
+                if (Physics.Raycast(ray, out hit))
+                {
+                    rotationTarget = hit.point;
+                }
 
-            if (joystickLook.x == 0 && joystickLook.y == 0)
-            {
-                movePlayer();
-                
+                movePlayerWithAim();
             }
             else
             {
-                movePlayerWithAim();
+
+                if (joystickLook.x == 0 && joystickLook.y == 0)
+                {
+                    movePlayer();
+
+                }
+                else
+                {
+                    movePlayerWithAim();
+                }
+
             }
-            
+            Attack();
         }
-        Attack();
+        
+        
     }
 
     public void movePlayer()
@@ -161,8 +168,17 @@ public class PlayerController : MonoBehaviour
             //curHealth -= bullet.damage;
             //Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
+            isGroggy = true;
+            move.x = 0; move.y = 0;
+            Invoke("GroggyOut", 1.0f);
 
             //StartCoroutine(OnDamage());
         }
     }
+
+    void GroggyOut()
+    {
+        isGroggy = false;
+    }
 }
+

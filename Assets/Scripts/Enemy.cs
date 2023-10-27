@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour
 
     public void Awake()
     {
-        InvokeRepeating("ShotStart",1f,1f);
+        InvokeRepeating("ShotStart",2f,2f);
         
     }
     public void ShotStart()
