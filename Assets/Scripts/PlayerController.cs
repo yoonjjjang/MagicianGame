@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     public float speed;
     private Vector2 move, mouseLook ,joystickLook;
     private Vector3 rotationTarget;
+    private TouchControl touchControl;
     public bool isPC;
     bool isTargeting = false;
     bool isShot = false;
@@ -16,11 +19,23 @@ public class PlayerController : MonoBehaviour
     float y;
     PlayerEvent pEven;
 
+    public GameObject[] items;
+    public bool[] hasItems;
+    int ItemIndex;
+    private int preItems = 0;
+    GameObject nearObject;
+
+    public int health;
+
+    GameObject btnImg;
+
+
     Animator anim;
 
     void Start()
     {
         pEven = GetComponent<PlayerEvent>();
+        btnImg = GameObject.FindGameObjectWithTag("ImgBtn");
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -37,10 +52,16 @@ public class PlayerController : MonoBehaviour
         joystickLook = context.ReadValue<Vector2>();
     }
 
+    public void OnUseItem(InputAction.CallbackContext context)
+    {
+        UseItem();
+    }
+
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         isTargeting = false;
+        touchControl = new TouchControl();
     }
 
     void Update()
@@ -153,10 +174,33 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("idleToAttack01", isShot);
     }
 
+
     void AttackOut()
     {
         Debug.Log("shot!");
         isShot = false;
+    }
+
+    private void UseItem()
+    {
+        if (items[ItemIndex] != null)
+        {
+            switch (items[ItemIndex].GetComponent<Item>().type)
+            {
+                case Item.Type.HealPotion:
+
+                    //Ã¼·Â »ó½Â health += healthpotionvalue;
+                    break;
+                case Item.Type.ManaPotion:
+
+                    //¸¶³ª »ó½Â mana += manapotionvalue; '¤µ'
+                    break;
+
+            }
+            hasItems[ItemIndex] = false;
+            ItemIndex = 2;
+            btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+        }
     }
 
 
@@ -174,7 +218,32 @@ public class PlayerController : MonoBehaviour
 
             //StartCoroutine(OnDamage());
         }
+        if (other.tag == "Item")
+        {
+            Item item = other.GetComponent<Item>();
+            ItemIndex = item.value;
+            hasItems[preItems] = false;
+            hasItems[ItemIndex] = true;
+            preItems = ItemIndex;
+            btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+            Destroy(other.gameObject);
+
+        }
     }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.tag == "Item")
+            nearObject = other.gameObject;
+
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Item")
+            nearObject = null;
+    }
+
 
     void GroggyOut()
     {

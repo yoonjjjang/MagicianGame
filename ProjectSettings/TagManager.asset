@@ -7,6 +7,8 @@ TagManager:
   - M_joystick
   - A_joystick
   - Magic
+  - Item
+  - ImgBtn
   layers:
   - Default
   - TransparentFX
