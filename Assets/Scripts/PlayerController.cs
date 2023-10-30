@@ -24,7 +24,6 @@ public class PlayerController : MonoBehaviour
     int ItemIndex;
     private int preItems = 0;
     GameObject nearObject;
-
     public int health;
 
     GameObject btnImg;
@@ -213,6 +212,7 @@ public class PlayerController : MonoBehaviour
             //Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
             isGroggy = true;
+            transform.GetChild(3).gameObject.SetActive(true);
             move.x = 0; move.y = 0;
             Invoke("GroggyOut", 1.0f);
 
@@ -247,6 +247,7 @@ public class PlayerController : MonoBehaviour
 
     void GroggyOut()
     {
+        transform.GetChild(3).gameObject.SetActive(false);
         isGroggy = false;
     }
 }
