@@ -26,7 +26,7 @@ public class Timer : MonoBehaviour
             remainingTime = 0;
             timerText.color = Color.red;
         }
-        if (remainingTime <= 30)
+        if (remainingTime <= 30 && remainingTime > 0)
         {
             timerText.color = Color.yellow;
         }

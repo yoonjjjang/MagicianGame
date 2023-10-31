@@ -30,17 +30,21 @@ public class PlayerController : MonoBehaviour
     public int health;
     public int mana;
 
-    GameObject btnImg;
+    public int maxHealth;
 
+    GameObject btnImg;
 
     Animator anim;
 
+    [SerializeField]
+    private Slider hpbar;
     
 
     void Start()
     {
         pEven = GetComponent<PlayerEvent>();
         btnImg = GameObject.FindGameObjectWithTag("ImgBtn");
+        hpbar.value = (float)health / (float)maxHealth; //체력바 초기화
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -199,6 +203,7 @@ public class PlayerController : MonoBehaviour
                     //Debug.Log("Use 1");
                     //Debug.Log(items[ItemIndex].GetComponent<Item>().effec);
                     health += items[ItemIndex].GetComponent<Item>().effec;
+                    hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
                     break;
                 case Item.Type.ManaPotion:
                     //Debug.Log("Use 2");
@@ -231,7 +236,7 @@ public class PlayerController : MonoBehaviour
             health -= magic.damage;
             //Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
-      
+            hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
             move.x = 0; move.y = 0;
             if (health == 0)
             {
