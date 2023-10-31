@@ -4956,6 +4956,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   value: 0
+  effec: 30
 --- !u!1 &7280292125414543895
 GameObject:
   m_ObjectHideFlags: 0

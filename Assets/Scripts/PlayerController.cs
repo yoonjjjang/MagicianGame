@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 //테스트
 public class PlayerController : MonoBehaviour
@@ -15,6 +16,8 @@ public class PlayerController : MonoBehaviour
     bool isTargeting = false;
     bool isShot = false;
     bool isGroggy = false;
+    public bool isRecharging = false;
+    public bool isBorder;
     float x;
     float y;
     PlayerEvent pEven;
@@ -25,11 +28,14 @@ public class PlayerController : MonoBehaviour
     private int preItems = 0;
     GameObject nearObject;
     public int health;
+    public int mana;
 
     GameObject btnImg;
 
 
     Animator anim;
+
+    
 
     void Start()
     {
@@ -96,8 +102,10 @@ public class PlayerController : MonoBehaviour
             }
             Attack();
         }
-        
-        
+        if(mana < 10 && !isRecharging)
+            StartCoroutine("RechargeMana");
+
+        StopToWall();
     }
 
     public void movePlayer()
@@ -109,8 +117,8 @@ public class PlayerController : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), 0.15f);
         }
-
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        if(!isBorder)
+            transform.Translate(movement * speed * Time.deltaTime, Space.World);
 
         anim.SetBool("idleToRun", movement != Vector3.zero);
     }
@@ -161,8 +169,9 @@ public class PlayerController : MonoBehaviour
                 isTargeting = true;
 
             }
-            else if (x == 0 && y == 0 && isTargeting == true)
+            else if (x == 0 && y == 0 && isTargeting == true && mana >= 1)
             {
+                mana--;
                 pEven.Use();
                 isShot = true;
                 Invoke("AttackOut", 0.82f);
@@ -187,15 +196,18 @@ public class PlayerController : MonoBehaviour
             switch (items[ItemIndex].GetComponent<Item>().type)
             {
                 case Item.Type.HealPotion:
-
-                    //체력 상승 health += healthpotionvalue;
+                    //Debug.Log("Use 1");
+                    //Debug.Log(items[ItemIndex].GetComponent<Item>().effec);
+                    health += items[ItemIndex].GetComponent<Item>().effec;
                     break;
                 case Item.Type.ManaPotion:
-
+                    //Debug.Log("Use 2");
+                    mana += items[ItemIndex].GetComponent<Item>().effec;
                     //마나 상승 mana += manapotionvalue; 'ㅅ'
                     break;
 
             }
+            //Debug.Log("Use 3");
             hasItems[ItemIndex] = false;
             ItemIndex = 2;
             btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
@@ -207,8 +219,8 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "Magic")
         {
-            //Magic magic = other.GetComponent<Magic>();
-            //curHealth -= bullet.damage;
+            Magic magic = other.GetComponent<Magic>();
+            health -= magic.damage;
             //Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
             isGroggy = true;
@@ -249,6 +261,26 @@ public class PlayerController : MonoBehaviour
     {
         transform.GetChild(3).gameObject.SetActive(false);
         isGroggy = false;
+    }
+    
+    IEnumerator RechargeMana()
+    {
+        isRecharging = true;
+        while(mana < 10)
+        {
+            yield return new WaitForSecondsRealtime(2.0f);
+            mana++;
+            if (mana >= 10)
+            {
+                isRecharging = false;
+                yield break;
+            }
+        }
+    }
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward, Color.green);
+        isBorder = Physics.Raycast(transform.position, transform.forward, 1, LayerMask.GetMask("Wall"));
     }
 }
 

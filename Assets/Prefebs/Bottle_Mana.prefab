@@ -9797,6 +9797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   value: 1
+  effec: 3
 --- !u!54 &7973297646759203497
 Rigidbody:
   m_ObjectHideFlags: 0

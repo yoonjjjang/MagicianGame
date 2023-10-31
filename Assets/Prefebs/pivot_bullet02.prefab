@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6221709520179958011}
   - component: {fileID: 7822472762840498643}
   - component: {fileID: 2403235849651414721}
+  - component: {fileID: -605607307633814441}
   m_Layer: 0
   m_Name: pivot_bullet02
   m_TagString: Magic
@@ -82,6 +83,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &-605607307633814441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2949761227624671498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbdda297609f23f4db2c8119f585e0ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 10
 --- !u!1 &5134365528529682428
 GameObject:
   m_ObjectHideFlags: 0
