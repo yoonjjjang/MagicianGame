@@ -1450,12 +1450,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 8
   isPC: 0
+  isRecharging: 0
   items:
   - {fileID: 4744619350557837194, guid: 54d77750ae5b939438ed6548d8156206, type: 3}
   - {fileID: 4685890632485251129, guid: eee3b2306a33a5644bed3829e296650e, type: 3}
   - {fileID: 0}
   hasItems: 000000
-  health: 0
+  health: 100
+  mana: 10
 --- !u!4 &1771212498 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 621269165369195748, guid: c503005f0722d2944a30c551593e022d, type: 3}
@@ -1642,8 +1644,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4040795555315130165, guid: 54d77750ae5b939438ed6548d8156206, type: 3}
+      propertyPath: effec
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 4040795555315130165, guid: 54d77750ae5b939438ed6548d8156206, type: 3}
       propertyPath: value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4040795555315130165, guid: 54d77750ae5b939438ed6548d8156206, type: 3}
+      propertyPath: effect
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 4744619350557837194, guid: 54d77750ae5b939438ed6548d8156206, type: 3}
       propertyPath: m_Name

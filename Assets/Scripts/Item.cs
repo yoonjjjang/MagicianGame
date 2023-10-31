@@ -7,6 +7,7 @@ public class Item : MonoBehaviour
     public enum Type { HealPotion, ManaPotion};
     public Type type;
     public int value;
+    public int effec;
 
     void Update()
     {
