@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     bool isShot = false;
     bool isGroggy = false;
     public bool isRecharging = false;
+    public bool isBorder;
     float x;
     float y;
     PlayerEvent pEven;
@@ -103,6 +104,8 @@ public class PlayerController : MonoBehaviour
         }
         if(mana < 10 && !isRecharging)
             StartCoroutine("RechargeMana");
+
+        StopToWall();
     }
 
     public void movePlayer()
@@ -114,8 +117,8 @@ public class PlayerController : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(movement), 0.15f);
         }
-
-        transform.Translate(movement * speed * Time.deltaTime, Space.World);
+        if(!isBorder)
+            transform.Translate(movement * speed * Time.deltaTime, Space.World);
 
         anim.SetBool("idleToRun", movement != Vector3.zero);
     }
@@ -273,6 +276,11 @@ public class PlayerController : MonoBehaviour
                 yield break;
             }
         }
+    }
+    void StopToWall()
+    {
+        Debug.DrawRay(transform.position, transform.forward, Color.green);
+        isBorder = Physics.Raycast(transform.position, transform.forward, 1, LayerMask.GetMask("Wall"));
     }
 }
 
