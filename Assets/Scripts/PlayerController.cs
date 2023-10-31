@@ -214,6 +214,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void Die()
+    {
+        anim.SetBool("idleToDie", health == 0);
+
+
+        //여기서 사망 후 결과 처리 하면 될듯??
+    }
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -223,10 +231,18 @@ public class PlayerController : MonoBehaviour
             health -= magic.damage;
             //Vector3 reactVec = transform.position - other.transform.position;
             Destroy(other.gameObject);
-            isGroggy = true;
-            transform.GetChild(3).gameObject.SetActive(true);
+      
             move.x = 0; move.y = 0;
-            Invoke("GroggyOut", 1.0f);
+            if (health == 0)
+            {
+                Die();  //플레이어 체력 0일때 진입
+            }
+            else //아니면 일반 피격 효과  기절탄일때와 아닐때 스턴o, x도 나중에 구분해줘야할듯
+            {
+                isGroggy = true;
+                transform.GetChild(3).gameObject.SetActive(true);
+                Invoke("GroggyOut", 1.0f);
+            }
 
             //StartCoroutine(OnDamage());
         }

@@ -1877,7 +1877,7 @@ MonoBehaviour:
   - {fileID: 4685890632485251129, guid: eee3b2306a33a5644bed3829e296650e, type: 3}
   - {fileID: 0}
   hasItems: 000000
-  health: 100
+  health: 10
   mana: 10
 --- !u!4 &1771212498 stripped
 Transform:
