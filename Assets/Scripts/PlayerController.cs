@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     public int mana;
 
     public int maxHealth;
+    public int maxMana;
 
     GameObject btnImg;
 
@@ -38,13 +39,15 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private Slider hpbar;
-    
+    [SerializeField]
+    private Slider mpbar;
 
     void Start()
     {
         pEven = GetComponent<PlayerEvent>();
         btnImg = GameObject.FindGameObjectWithTag("ImgBtn");
         hpbar.value = (float)health / (float)maxHealth; //체력바 초기화
+        mpbar.value = (float)mana / (float)maxMana;
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -160,7 +163,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Attack()
     {
-        if (!isShot)
+        if (!isShot && mana > 0)
         {
             if (pEven == null)
                 return;
@@ -179,6 +182,7 @@ public class PlayerController : MonoBehaviour
                 pEven.Use();
                 isShot = true;
                 Invoke("AttackOut", 0.82f);
+                mpbar.value = (float)mana / (float)maxMana;
                 isTargeting = false;
             }
 
@@ -202,20 +206,39 @@ public class PlayerController : MonoBehaviour
                 case Item.Type.HealPotion:
                     //Debug.Log("Use 1");
                     //Debug.Log(items[ItemIndex].GetComponent<Item>().effec);
-                    health += items[ItemIndex].GetComponent<Item>().effec;
-                    hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
+                    if (health < maxHealth)
+                    {
+                        health += items[ItemIndex].GetComponent<Item>().effec;
+                        if (health > maxHealth)
+                            health = maxHealth;
+                        hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
+
+
+                        hasItems[ItemIndex] = false;
+                        ItemIndex = 2;
+                        btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+                    }
                     break;
                 case Item.Type.ManaPotion:
                     //Debug.Log("Use 2");
-                    mana += items[ItemIndex].GetComponent<Item>().effec;
+                    if (mana < maxMana)
+                    {
+                        mana += items[ItemIndex].GetComponent<Item>().effec;
+                        if (mana > maxMana)
+                            mana = maxMana;
+                        mpbar.value = (float)mana / (float)maxMana;
+
+
+                        hasItems[ItemIndex] = false;
+                        ItemIndex = 2;
+                        btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+                    }
                     //마나 상승 mana += manapotionvalue; 'ㅅ'
                     break;
 
             }
             //Debug.Log("Use 3");
-            hasItems[ItemIndex] = false;
-            ItemIndex = 2;
-            btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+            
         }
     }
 
@@ -291,6 +314,7 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitForSecondsRealtime(2.0f);
             mana++;
+            mpbar.value = (float)mana / (float)maxMana;
             if (mana >= 10)
             {
                 isRecharging = false;
