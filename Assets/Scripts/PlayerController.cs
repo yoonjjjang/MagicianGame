@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject[] items;
     public bool[] hasItems;
-    int ItemIndex;
+    public int ItemIndex;
     private int preItems = 0;
     GameObject nearObject;
     public int health;
@@ -38,9 +38,9 @@ public class PlayerController : MonoBehaviour
     Animator anim;
 
     [SerializeField]
-    private Slider hpbar;
+    public Slider hpbar;
     [SerializeField]
-    private Slider mpbar;
+    public Slider mpbar;
 
     void Start()
     {
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
 
     public void OnUseItem(InputAction.CallbackContext context)
     {
-        UseItem();
+        pEven.UseItem();
     }
 
     void Awake()
@@ -197,50 +197,50 @@ public class PlayerController : MonoBehaviour
         isShot = false;
     }
 
-    private void UseItem()
-    {
-        if (items[ItemIndex] != null)
-        {
-            switch (items[ItemIndex].GetComponent<Item>().type)
-            {
-                case Item.Type.HealPotion:
-                    //Debug.Log("Use 1");
-                    //Debug.Log(items[ItemIndex].GetComponent<Item>().effec);
-                    if (health < maxHealth)
-                    {
-                        health += items[ItemIndex].GetComponent<Item>().effec;
-                        if (health > maxHealth)
-                            health = maxHealth;
-                        hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
+    //private void UseItem()
+    //{
+    //    if (items[ItemIndex] != null)
+    //    {
+    //        switch (items[ItemIndex].GetComponent<Item>().type)
+    //        {
+    //            case Item.Type.HealPotion:
+    //                //Debug.Log("Use 1");
+    //                //Debug.Log(items[ItemIndex].GetComponent<Item>().effec);
+    //                if (health < maxHealth)
+    //                {
+    //                    health += items[ItemIndex].GetComponent<Item>().effec;
+    //                    if (health > maxHealth)
+    //                        health = maxHealth;
+    //                    hpbar.value = (float)health / (float)maxHealth; //체력바 새로고침
 
 
-                        hasItems[ItemIndex] = false;
-                        ItemIndex = 2;
-                        btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
-                    }
-                    break;
-                case Item.Type.ManaPotion:
-                    //Debug.Log("Use 2");
-                    if (mana < maxMana)
-                    {
-                        mana += items[ItemIndex].GetComponent<Item>().effec;
-                        if (mana > maxMana)
-                            mana = maxMana;
-                        mpbar.value = (float)mana / (float)maxMana;
+    //                    hasItems[ItemIndex] = false;
+    //                    ItemIndex = 2;
+    //                    btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+    //                }
+    //                break;
+    //            case Item.Type.ManaPotion:
+    //                //Debug.Log("Use 2");
+    //                if (mana < maxMana)
+    //                {
+    //                    mana += items[ItemIndex].GetComponent<Item>().effec;
+    //                    if (mana > maxMana)
+    //                        mana = maxMana;
+    //                    mpbar.value = (float)mana / (float)maxMana;
 
 
-                        hasItems[ItemIndex] = false;
-                        ItemIndex = 2;
-                        btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
-                    }
-                    //마나 상승 mana += manapotionvalue; 'ㅅ'
-                    break;
+    //                    hasItems[ItemIndex] = false;
+    //                    ItemIndex = 2;
+    //                    btnImg.GetComponent<ImageChange>().ChangeImage(ItemIndex);
+    //                }
+    //                //마나 상승 mana += manapotionvalue; 'ㅅ'
+    //                break;
 
-            }
-            //Debug.Log("Use 3");
+    //        }
+    //        //Debug.Log("Use 3");
             
-        }
-    }
+    //    }
+    //}
 
     private void Die()
     {
